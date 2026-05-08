@@ -1004,6 +1004,35 @@ function generateTracking() {
   return `QC-${year}-${num}`;
 }
 
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxpy5_yjipdzQupxeOGLl2h8lYnWhPMaMVoXwXorKZbxQcNP2TlmEK8DDfjwP2zjNkPwg/exec';
+
+function sendToGoogleSheets(fields) {
+  const payload = {
+    timestamp:      new Date().toISOString(),
+    tracking:       fields.tracking,
+    lastName:       fields.lastName,
+    firstName:      fields.firstName,
+    middleName:     fields.middleName || '',
+    suffix:         fields.suffix    || '',
+    email:          fields.email,
+    dateOfBirth:    fields.birthdate,
+    age:            fields.age,
+    sex:            fields.sex,
+    contact:        fields.contact,
+    address:        fields.address,
+    philhealthId:   fields.philhealthId,
+    dateRegistered: fields.dateRegistered,
+    provider:       'QualiCheck Diagnostic Clinic',
+  };
+
+  fetch(GOOGLE_SHEET_URL, {
+    method:  'POST',
+    mode:    'no-cors',           // required for Apps Script
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
+  }).catch(err => console.warn('Sheet sync failed:', err));
+}
+
 function submitForm() {
   const fields = {
     lastName:    document.getElementById('lastName').value.trim(),
@@ -1045,6 +1074,7 @@ function submitForm() {
       const stored = JSON.parse(sessionStorage.getItem('qdc_registrations') || '{}');
       stored[tracking] = fields;
       sessionStorage.setItem('qdc_registrations', JSON.stringify(stored));
+      sendToGoogleSheets(fields);
 
       // Format full name: Last name, First name, Middle name, Suffix
       let fullName = fields.lastName + ', ' + fields.firstName;
