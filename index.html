@@ -7,7 +7,7 @@
   <title>YAKAP Pre-Registration | QualiCheck Diagnostic Clinic</title>
 
   <!-- ── Favicon (tab icon) ── -->
-  <link rel="icon" type="image/png" href="qc-logo-purple.png">
+  <link rel="icon" type="image/png" href="favicon.png">
   <link rel="shortcut icon" href="favicon.png">
 
   <!-- ── Link thumbnail (Open Graph) ── -->
@@ -916,6 +916,42 @@
       color: var(--ph-blue);
     }
 
+    .consent-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      cursor: pointer;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      width: 100%;
+      transition: var(--transition);
+    }
+
+    .consent-label:has(.consent-check:checked) {
+      border-color: #16a34a;
+      background: #f0fdf4;
+      color: var(--text);
+    }
+
+    .consent-label.error-consent {
+      border-color: #e04f5f;
+      background: #fff5f5;
+    }
+
+    .consent-check {
+      margin-top: 2px;
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--ph-blue);
+      cursor: pointer;
+    }
+
     /* ─── FOOTER ─── */
     footer {
       background: var(--qc-purple-dark);
@@ -1494,7 +1530,7 @@
     <div class="nav-links" id="navLinks">
       <button type="button" class="nav-link" onclick="scrollToSection('#programs')">Programs</button>
       <button type="button" class="nav-link" onclick="scrollToSection('#how')">How It Works</button>
-      <a class="nav-cta" href="https://www.facebook.com/qualicheckdiagnosticclinic" target="_blank">CHAT US</a>
+      <a class="nav-cta" href="https://www.facebook.com/qualicheckdiagnosticclinic" target="_blank" rel="noopener noreferrer">CHAT US</a>
     </div>
     <div class="hamburger" id="hamburger" onclick="toggleNav()">
       <span></span><span></span><span></span>
@@ -1700,11 +1736,13 @@
           </div>
         </div>
         <div class="form-footer">
+          <label class="consent-label">
+            <input type="checkbox" id="consentCheck" class="consent-check">
+            <span>I agree that my personal information will be collected and processed by QualiCheck Diagnostic Clinic solely for YAKAP pre-registration purposes, in accordance with the <strong>Philippine Data Privacy Act (RA 10173)</strong>.</span>
+          </label>
           <button type="button" class="btn-submit" id="submitBtn" onclick="submitForm()">
             <span>Submit Pre-Registration</span>
           </button>
-          <p class="privacy-note">Your data is protected and used only for YAKAP registration processing. By submitting,
-            you consent to clinic data use.</p>
         </div>
       </div>
     </div>
@@ -1995,6 +2033,9 @@
     }
 
     const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxpy5_yjipdzQupxeOGLl2h8lYnWhPMaMVoXwXorKZbxQcNP2TlmEK8DDfjwP2zjNkPwg/exec';
+    const SUBMIT_SECRET = 'QDC-YAKAP-2026'; // Must match SECRET_TOKEN in Apps Script
+    const SUBMIT_COOLDOWN_MS = 60000; // 60-second cooldown between submissions
+    let lastSubmitTime = 0;
 
     async function generateTracking() {
       const year = new Date().getFullYear();
@@ -2002,7 +2043,7 @@
       // ── Step 1: fetch all existing tracking numbers from Google Sheets ──
       let existingIds = new Set();
       try {
-        const res = await fetch(`${GOOGLE_SHEET_URL}?action=list`);
+        const res = await fetch(`${GOOGLE_SHEET_URL}?action=list&secret=${encodeURIComponent(SUBMIT_SECRET)}`);
         const json = await res.json();
         if (json.success && json.records) {
           json.records.forEach(r => existingIds.add(r.tracking));
@@ -2026,6 +2067,7 @@
 
     function sendToGoogleSheets(fields) {
       const payload = {
+        secret: SUBMIT_SECRET,
         timestamp: new Date().toISOString(),
         tracking: fields.tracking,
         lastName: fields.lastName,
@@ -2033,7 +2075,7 @@
         middleName: fields.middleName || '',
         suffix: fields.suffix || '',
         email: fields.email,
-        dateOfBirth: fields.birthdate,
+        birthdate: fields.birthdate,
         age: fields.age,
         sex: fields.sex,
         contact: fields.contact,
@@ -2045,13 +2087,21 @@
 
       fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
-        mode: 'no-cors',           // required for Apps Script
-        headers: { 'Content-Type': 'application/json' },
+        // text/plain avoids CORS preflight while keeping the body intact.
+        // Apps Script receives it fine via e.postData.contents.
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload),
       }).catch(err => console.warn('Sheet sync failed:', err));
     }
 
     function submitForm() {
+      const now = Date.now();
+      if (now - lastSubmitTime < SUBMIT_COOLDOWN_MS) {
+        const remaining = Math.ceil((SUBMIT_COOLDOWN_MS - (now - lastSubmitTime)) / 1000);
+        showToast(`⏳ Please wait ${remaining}s before submitting again.`, 'error');
+        return;
+      }
+
       const fields = {
         lastName: document.getElementById('lastName').value.trim(),
         firstName: document.getElementById('firstName').value.trim(),
@@ -2074,6 +2124,16 @@
         return;
       }
 
+      const consentCheck = document.getElementById('consentCheck');
+      const consentLabel = consentCheck.closest('.consent-label');
+      if (!consentCheck.checked) {
+        consentLabel.classList.add('error-consent');
+        showToast('⚠️ Please agree to the data privacy consent before submitting.', 'error');
+        consentLabel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+      consentLabel.classList.remove('error-consent');
+
       const btn = document.getElementById('submitBtn');
       btn.disabled = true;
       showLoading('Submitting your registration…');
@@ -2088,10 +2148,11 @@
         fields.dateRegistered = new Date().toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' });
         registrations[tracking] = fields;
 
-        const stored = JSON.parse(sessionStorage.getItem('qdc_registrations') || '{}');
-        stored[tracking] = fields;
+        const stored = JSON.parse(sessionStorage.getItem('qdc_registrations') || '[]');
+        stored.push(tracking);
         sessionStorage.setItem('qdc_registrations', JSON.stringify(stored));
         sendToGoogleSheets(fields);
+        lastSubmitTime = Date.now();
 
         let fullName = fields.lastName + ', ' + fields.firstName;
         if (fields.middleName) fullName += ' ' + fields.middleName;
@@ -2562,6 +2623,11 @@
       document.getElementById('barangayInput').value = '';
       document.getElementById('barangayWrap').classList.remove('valid');
       document.getElementById('barangaySuggestions').style.display = 'none';
+
+      // reset consent checkbox
+      const consentCheck = document.getElementById('consentCheck');
+      consentCheck.checked = false;
+      consentCheck.closest('.consent-label').classList.remove('error-consent');
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
