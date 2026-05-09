@@ -1444,6 +1444,7 @@
       border-color: rgba(0, 87, 168, 0.4);
     }
   </style>
+
 </head>
 
 <body>
@@ -1638,7 +1639,7 @@
             <div class="form-group full" id="addressGroup">
               <label class="form-label">Barangay <span class="req">*</span></label>
               <div class="input-wrap" id="barangayWrap">
-                <input class="form-input" id="barangayInput" type="text" placeholder="Type your barangay..."
+                <input class="form-input" id="barangayInput" type="text" placeholder=""
                   oninput="filterBarangays(this.value)" autocomplete="off">
                 <span class="valid-icon">✓</span>
                 <div id="barangaySuggestions" style="
@@ -2508,6 +2509,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      history.scrollRestoration = 'manual';
       buildCarousel();
       document.getElementById('birthdate').max = new Date().toISOString().split('T')[0];
     });
