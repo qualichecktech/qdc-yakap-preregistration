@@ -5,6 +5,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YAKAP Pre-Registration | QualiCheck Diagnostic Clinic</title>
+
+  <!-- ── Favicon (tab icon) ── -->
+  <link rel="icon" type="image/png" href="qc-logo-purple.png">
+  <link rel="shortcut icon" href="favicon.png">
+
+  <!-- ── Link thumbnail (Open Graph) ── -->
+  <meta property="og:title" content="YAKAP Pre-Registration | QualiCheck Diagnostic Clinic">
+  <meta property="og:description" content="Pre-register for PhilHealth YAKAP at QualiCheck Diagnostic Clinic, San Pedro City, Laguna.">
+  <meta property="og:image" content="thumbnail.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:type" content="website">
+
+  <!-- ── Twitter/X card fallback ── -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="thumbnail.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -582,7 +599,7 @@
     }
 
     .card-image-placeholder::after {
-      content: '📷';
+      display: none;
     }
 
     .card-image-placeholder img {
@@ -604,7 +621,26 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      margin-top: auto;
+      flex: 1;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 8px;
+      margin-bottom: 6px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      min-height: 95px;
+      /* same description height */
     }
 
     .card-desc {
@@ -1848,25 +1884,47 @@
     let currentTracking = '';
 
     // ─── CAROUSEL DATA ───
-    const programs = [
-      { icon: '🩺', tag: 'Consultation', title: 'Medical Consultation', desc: 'Free doctor consultations for YAKAP-enrolled members and their qualified dependents.' },
-      { icon: '🧪', tag: 'Laboratory', title: 'Complete Blood Count', desc: 'CBC with platelet, urinalysis, fecalysis, and other basic laboratory packages.' },
-      { icon: '❤️', tag: 'Cardiology', title: 'ECG / EKG', desc: '12-lead electrocardiogram for cardiac screening included in the YAKAP package.' },
-      { icon: '🫁', tag: 'Radiology', title: 'Chest X-Ray', desc: 'Posteroanterior (PA) chest X-ray for pulmonary screening and TB control.' },
-      { icon: '🩸', tag: 'Chemistry', title: 'Blood Chemistry Panel', desc: 'FBS, lipid profile, uric acid, creatinine, and liver function tests.' },
-      { icon: '👁️', tag: 'Ophthalmology', title: 'Visual Acuity Test', desc: 'Basic eye exam and visual acuity screening included in YAKAP packages.' },
-      { icon: '🦷', tag: 'Dental', title: 'Oral Health Screening', desc: 'Dental consultation, oral prophylaxis, and basic tooth extraction coverage.' },
-      { icon: '💊', tag: 'Pharmacy', title: 'Outpatient Drug Benefit', desc: 'Discounted or free essential medicines under the outpatient drug benefit program.' },
-      { icon: '🤰', tag: 'OB-GYN', title: 'Prenatal Care Package', desc: 'Complete prenatal checkups, ultrasound, and delivery care for pregnant members.' },
-      { icon: '👶', tag: 'Pediatrics', title: 'Child Health Package', desc: 'Immunizations, growth monitoring, and pediatric consultations for dependents.' },
-    ];
+  const programs = [
+  {
+    title: 'Libreng Konsulta',
+    desc: 'Magpatingin nang libre sa doktor para sa miyembro ng PhilHealth at kwalipikadong dependents.',
+    image: 'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+  },
+  {
+    title: '13 Libreng Laboratory Tests',
+    desc: 'May kasamang 13 laboratory tests tulad ng CBC, urinalysis, HbA1C at iba pa.',
+    image: 'https://images.pexels.com/photos/3735770/pexels-photo-3735770.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+  },
+  {
+    title: 'YAKAP Caravan 2026',
+    desc: 'Libreng checkup, laboratory, at gamot para sa miyembro ng PhilHealth, senior, PWD, solo parent, at pamilya.',
+    image: 'https://images.pexels.com/photos/6285341/pexels-photo-6285341.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+  },
+  {
+    title: 'YAKAP Guro 2026',
+    desc: 'Libreng laboratory at checkup para sa mga guro. May espesyal na package para sa annual physical exam.',
+    image: 'https://images.pexels.com/photos/8499541/pexels-photo-8499541.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+  },
+  {
+    title: 'Libreng Chest X-Ray',
+    desc: 'Libreng X-ray para makatulong sa pag-check ng kalusugan ng baga.',
+    image: 'https://images.pexels.com/photos/4226205/pexels-photo-4226205.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+  },
+  {
+    title: 'Blood Chemistry Test',
+    desc: 'Kasama ang blood sugar, cholesterol, uric acid, at iba pang mahalagang test sa dugo.',
+    image: 'https://images.pexels.com/photos/4047146/pexels-photo-4047146.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+  }
+];
 
     function buildCarousel() {
       const track = document.getElementById('carouselTrack');
       const all = [...programs, ...programs];
       track.innerHTML = all.map(p => `
     <div class="program-card">
-      <div class="card-image-placeholder"></div>
+      <div class="card-image-placeholder">
+  <img src="${p.image}" alt="${p.title}">
+</div>
       <div class="card-body">
         <div class="card-title">${p.title}</div>
         <div class="card-desc">${p.desc}</div>
