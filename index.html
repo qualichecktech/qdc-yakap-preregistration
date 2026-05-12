@@ -1725,6 +1725,24 @@
               <span class="form-hint">San Pedro City, Laguna</span>
             </div>
             <div class="form-group full">
+              <label class="form-label">Company / Employer Name <span class="req">*</span></label>
+              <div class="input-wrap">
+                <input class="form-input" id="company" type="text" placeholder=""
+                  oninput="validateField('company')">
+                <span class="valid-icon">✓</span>
+              </div>
+              <span class="form-hint">Enter your company or employer name. Type N/A if none.</span>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">QDC Program Visit Date <span class="req">*</span></label>
+              <div class="input-wrap">
+                <input class="form-input" id="qdcProgramDate" type="date" min=""
+                  oninput="validateField('qdcProgramDate')">
+                <span class="valid-icon">✓</span>
+              </div>
+              <span class="form-hint">Select the date you plan to visit the clinic (walk-in or scheduled program).</span>
+            </div>
+            <div class="form-group full">
               <label class="form-label">PhilHealth ID Number <span class="req">*</span></label>
               <div class="input-wrap">
                 <input class="form-input" id="philhealthId" type="text" placeholder="00-000000000-0" maxlength="14"
@@ -2082,6 +2100,8 @@
         address: fields.address,
         philhealthId: fields.philhealthId,
         dateRegistered: fields.dateRegistered,
+        company:        fields.company,
+        qdcProgramDate: fields.qdcProgramDate,
         provider: 'QualiCheck Diagnostic Clinic',
       };
 
@@ -2114,9 +2134,11 @@
         contact: document.getElementById('contact').value.trim(),
         address: document.getElementById('address').value.trim(),
         philhealthId: document.getElementById('philhealthId').value.trim(),
+        company:        document.getElementById('company').value.trim().toUpperCase(),
+        qdcProgramDate: document.getElementById('qdcProgramDate').value,
       };
 
-      if (!fields.lastName || !fields.firstName || !fields.birthdate || !fields.sex || !fields.contact || !fields.address || !fields.philhealthId) {
+      if (!fields.lastName || !fields.firstName || !fields.birthdate || !fields.sex || !fields.contact || !fields.address || !fields.philhealthId || !fields.company || !fields.qdcProgramDate) {
         showToast('⚠️ Please fill in all required fields.', 'error');
         ['lastName', 'firstName', 'contact', 'address'].forEach(id => {
           if (!document.getElementById(id).value.trim()) document.getElementById(id).classList.add('error');
@@ -2596,6 +2618,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       buildCarousel();
       document.getElementById('birthdate').max = new Date().toISOString().split('T')[0];
+      document.getElementById('qdcProgramDate').min = new Date().toISOString().split('T')[0];
 
       document.getElementById('barangayInput').addEventListener('focus', () => {
         renderSuggestions(SAN_PEDRO_BARANGAYS);
@@ -2611,7 +2634,7 @@
 
     function closeModal() {
       document.getElementById('successModal').classList.remove('show');
-      ['lastName', 'firstName', 'middleName', 'email', 'birthdate', 'ageField', 'contact', 'philhealthId'].forEach(id => {
+      ['lastName', 'firstName', 'middleName', 'email', 'birthdate', 'ageField', 'contact', 'philhealthId', 'company', 'qdcProgramDate'].forEach(id => {
         document.getElementById(id).value = '';
       });
       document.getElementById('suffix').value = '';
