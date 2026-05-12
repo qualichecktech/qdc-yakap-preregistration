@@ -7,8 +7,8 @@
   <title>YAKAP Pre-Registration | QualiCheck Diagnostic Clinic</title>
 
   <!-- ── Favicon (tab icon) ── -->
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="shortcut icon" href="favicon.png">
+  <link rel="icon" type="image/png" href="qc-logo-purple.png">
+  <link rel="shortcut icon" href="qc-logo-purple.png">
 
   <!-- ── Link thumbnail (Open Graph) ── -->
   <meta property="og:title" content="YAKAP Pre-Registration | QualiCheck Diagnostic Clinic">
@@ -2103,10 +2103,10 @@
       }
 
       const fields = {
-        lastName: document.getElementById('lastName').value.trim(),
-        firstName: document.getElementById('firstName').value.trim(),
-        middleName: document.getElementById('middleName').value.trim(),
-        suffix: document.getElementById('suffix').value,
+        lastName: document.getElementById('lastName').value.trim().toUpperCase(),
+        firstName: document.getElementById('firstName').value.trim().toUpperCase(),
+        middleName: document.getElementById('middleName').value.trim().toUpperCase(),
+        suffix: document.getElementById('suffix').value.trim().toUpperCase(),
         email: document.getElementById('email').value.trim(),
         birthdate: document.getElementById('birthdate').value,
         age: document.getElementById('ageField').value,
