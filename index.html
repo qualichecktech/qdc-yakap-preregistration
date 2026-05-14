@@ -12,15 +12,21 @@
 
   <!-- ── Link thumbnail (Open Graph) ── -->
   <meta property="og:title" content="YAKAP Pre-Registration | QualiCheck Diagnostic Clinic">
-  <meta property="og:description" content="Pre-register for PhilHealth YAKAP at QualiCheck Diagnostic Clinic, San Pedro City, Laguna.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/qualichecktech/qdc-yakap-preregistration/refs/heads/main/thumbnail.png">
+  <meta property="og:description"
+    content="Pre-register for PhilHealth YAKAP at QualiCheck Diagnostic Clinic, San Pedro City, Laguna.">
+  <meta name="twitter:image"
+    content="https://raw.githubusercontent.com/qualichecktech/qdc-yakap-preregistration/refs/heads/main/thumbnail.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:type" content="website">
+  <meta property="og:url"
+    content="https://raw.githubusercontent.com/qualichecktech/qdc-yakap-preregistration/refs/heads/main/index.html">
 
   <!-- ── Twitter/X card fallback ── -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/qualichecktech/qdc-yakap-preregistration/refs/heads/main/thumbnail.png">
+  <meta name="twitter:image"
+    content="https://raw.githubusercontent.com/qualichecktech/qdc-yakap-preregistration/refs/heads/main/thumbnail.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -1530,7 +1536,8 @@
     <div class="nav-links" id="navLinks">
       <button type="button" class="nav-link" onclick="scrollToSection('#programs')">Programs</button>
       <button type="button" class="nav-link" onclick="scrollToSection('#how')">How It Works</button>
-      <a class="nav-cta" href="https://www.facebook.com/qualicheckdiagnosticclinic" target="_blank" rel="noopener noreferrer">CHAT US</a>
+      <a class="nav-cta" href="https://www.facebook.com/qualicheckdiagnosticclinic" target="_blank"
+        rel="noopener noreferrer">CHAT US</a>
     </div>
     <div class="hamburger" id="hamburger" onclick="toggleNav()">
       <span></span><span></span><span></span>
@@ -1727,8 +1734,7 @@
             <div class="form-group full">
               <label class="form-label">Company<span class="req">*</span></label>
               <div class="input-wrap">
-                <input class="form-input" id="company" type="text" placeholder=""
-                  oninput="validateField('company')">
+                <input class="form-input" id="company" type="text" placeholder="" oninput="validateField('company')">
                 <span class="valid-icon">✓</span>
               </div>
               <span class="form-hint">Enter your company name. Type N/A if none.</span>
@@ -1740,7 +1746,8 @@
                   oninput="validateField('qdcProgramDate')">
                 <span class="valid-icon">✓</span>
               </div>
-              <span class="form-hint">Select the date you plan to visit the clinic (walk-in or scheduled program).</span>
+              <span class="form-hint">Select the date you plan to visit the clinic (walk-in or scheduled
+                program).</span>
             </div>
             <div class="form-group full">
               <label class="form-label">PhilHealth ID Number <span class="req">*</span></label>
@@ -1756,7 +1763,9 @@
         <div class="form-footer">
           <label class="consent-label">
             <input type="checkbox" id="consentCheck" class="consent-check">
-            <span>I agree that my personal information will be collected and processed by QualiCheck Diagnostic Clinic solely for YAKAP pre-registration purposes, in accordance with the <strong>Philippine Data Privacy Act (RA 10173)</strong>.</span>
+            <span>I agree that my personal information will be collected and processed by QualiCheck Diagnostic Clinic
+              solely for YAKAP pre-registration purposes, in accordance with the <strong>Philippine Data Privacy Act (RA
+                10173)</strong>.</span>
           </label>
           <button type="button" class="btn-submit" id="submitBtn" onclick="submitForm()">
             <span>Submit Pre-Registration</span>
@@ -1940,38 +1949,38 @@
     let currentTracking = '';
 
     // ─── CAROUSEL DATA ───
-  const programs = [
-  {
-    title: 'Libreng Konsulta',
-    desc: 'Magpatingin nang libre sa doktor para sa miyembro ng PhilHealth at kwalipikadong dependents.',
-    image: 'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
-  },
-  {
-    title: '13 Libreng Laboratory Tests',
-    desc: 'May kasamang 13 laboratory tests tulad ng CBC, urinalysis, HbA1C at iba pa.',
-    image: 'https://images.pexels.com/photos/3735770/pexels-photo-3735770.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
-  },
-  {
-    title: 'YAKAP Caravan 2026',
-    desc: 'Libreng checkup, laboratory, at gamot para sa miyembro ng PhilHealth, senior, PWD, solo parent, at pamilya.',
-    image: 'https://images.pexels.com/photos/6285341/pexels-photo-6285341.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
-  },
-  {
-    title: 'YAKAP Guro 2026',
-    desc: 'Libreng laboratory at checkup para sa mga guro. May espesyal na package para sa annual physical exam.',
-    image: 'https://images.pexels.com/photos/8499541/pexels-photo-8499541.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
-  },
-  {
-    title: 'Libreng Chest X-Ray',
-    desc: 'Libreng X-ray para makatulong sa pag-check ng kalusugan ng baga.',
-    image: 'https://images.pexels.com/photos/4226205/pexels-photo-4226205.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
-  },
-  {
-    title: 'Blood Chemistry Test',
-    desc: 'Kasama ang blood sugar, cholesterol, uric acid, at iba pang mahalagang test sa dugo.',
-    image: 'https://images.pexels.com/photos/4047146/pexels-photo-4047146.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
-  }
-];
+    const programs = [
+      {
+        title: 'Libreng Konsulta',
+        desc: 'Magpatingin nang libre sa doktor para sa miyembro ng PhilHealth at kwalipikadong dependents.',
+        image: 'https://images.pexels.com/photos/40568/medical-appointment-doctor-healthcare-40568.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+      },
+      {
+        title: '13 Libreng Laboratory Tests',
+        desc: 'May kasamang 13 laboratory tests tulad ng CBC, urinalysis, HbA1C at iba pa.',
+        image: 'https://images.pexels.com/photos/3735770/pexels-photo-3735770.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+      },
+      {
+        title: 'YAKAP Caravan 2026',
+        desc: 'Libreng checkup, laboratory, at gamot para sa miyembro ng PhilHealth, senior, PWD, solo parent, at pamilya.',
+        image: 'https://images.pexels.com/photos/6285341/pexels-photo-6285341.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+      },
+      {
+        title: 'YAKAP Guro 2026',
+        desc: 'Libreng laboratory at checkup para sa mga guro. May espesyal na package para sa annual physical exam.',
+        image: 'https://images.pexels.com/photos/8499541/pexels-photo-8499541.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+      },
+      {
+        title: 'Libreng Chest X-Ray',
+        desc: 'Libreng X-ray para makatulong sa pag-check ng kalusugan ng baga.',
+        image: 'https://images.pexels.com/photos/4226205/pexels-photo-4226205.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+      },
+      {
+        title: 'Blood Chemistry Test',
+        desc: 'Kasama ang blood sugar, cholesterol, uric acid, at iba pang mahalagang test sa dugo.',
+        image: 'https://images.pexels.com/photos/4047146/pexels-photo-4047146.jpeg?auto=compress&cs=tinysrgb&w=800&fit=crop'
+      }
+    ];
 
     function buildCarousel() {
       const track = document.getElementById('carouselTrack');
@@ -2100,7 +2109,7 @@
         address: fields.address,
         philhealthId: fields.philhealthId,
         dateRegistered: fields.dateRegistered,
-        company:        fields.company,
+        company: fields.company,
         qdcProgramDate: fields.qdcProgramDate,
         provider: 'QualiCheck Diagnostic Clinic',
       };
@@ -2134,7 +2143,7 @@
         contact: document.getElementById('contact').value.trim(),
         address: document.getElementById('address').value.trim(),
         philhealthId: document.getElementById('philhealthId').value.trim(),
-        company:        document.getElementById('company').value.trim().toUpperCase(),
+        company: document.getElementById('company').value.trim().toUpperCase(),
         qdcProgramDate: document.getElementById('qdcProgramDate').value,
       };
 
