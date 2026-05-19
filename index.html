@@ -2050,8 +2050,8 @@
       setTimeout(() => t.classList.remove('show'), 4000);
     }
 
-    const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxpy5_yjipdzQupxeOGLl2h8lYnWhPMaMVoXwXorKZbxQcNP2TlmEK8DDfjwP2zjNkPwg/exec';
-    const SUBMIT_SECRET = 'QDC-YAKAP-2026'; // Must match SECRET_TOKEN in Apps Script
+    const PUBLIC_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxpy5_yjipdzQupxeOGLl2h8lYnWhPMaMVoXwXorKZbxQcNP2TlmEK8DDfjwP2zjNkPwg/exec';
+    const SUBMIT_SECRET = 'QDC-YAKAP-2026-PUBLIC'; // Must match SECRET_TOKEN in Apps Script
     const SUBMIT_COOLDOWN_MS = 60000; // 60-second cooldown between submissions
     let lastSubmitTime = 0;
 
@@ -2061,7 +2061,7 @@
       // ── Step 1: fetch all existing tracking numbers from Google Sheets ──
       let existingIds = new Set();
       try {
-        const res = await fetch(`${GOOGLE_SHEET_URL}?action=list&secret=${encodeURIComponent(SUBMIT_SECRET)}`);
+        const res = await fetch(`${PUBLIC_SHEET_URL}?action=list&secret=${encodeURIComponent(SUBMIT_SECRET)}`);
         const json = await res.json();
         if (json.success && json.records) {
           json.records.forEach(r => existingIds.add(r.tracking));
@@ -2105,7 +2105,7 @@
         provider: 'QualiCheck Diagnostic Clinic',
       };
 
-      fetch(GOOGLE_SHEET_URL, {
+      fetch(PUBLIC_SHEET_URL, {
         method: 'POST',
         // text/plain avoids CORS preflight while keeping the body intact.
         // Apps Script receives it fine via e.postData.contents.
